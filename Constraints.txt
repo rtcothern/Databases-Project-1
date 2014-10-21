@@ -1,0 +1,57 @@
+Constraints:
+
+Movie:
+	1. Id is primary key
+	2. Title is not null
+	3. Year between 1890 and 2020
+	4. Identification number is non null
+	5. Year is not null
+	6. Production company is not null
+
+Actor
+	1. Id is primary key
+	2. First and last name not null
+	3. Sex non null
+	4. Dob non null
+	5. Dob and Dod are both before 10/29/2014
+
+Director
+	1. Id is primary key
+	2. First and last name not null
+	3. Dob non null
+	4. Dob and Dod are both before 10/29/2014
+
+MovieGenre
+	1. Mid is a ForeignKey to Movie ID
+	2. Mid is not null
+	3. Genre is not null
+
+Movie Director
+	1. Mid is a ForeignKey to Movie ID
+	2. Mid is not null
+	3. Did is a ForeignKey to Director
+	4. Director is not null
+
+Movie Actor
+	1. Mid is a ForeignKey to Movie ID
+	2. Mid is not null
+	3. Aid is a ForeignKey to Movie ID
+	4. Aid is not null
+	5. Role is not null
+
+Review
+	1. Name is not null
+	2. Time is not null
+	3. Mid is a ForeignKey to Movie ID
+	4. Mid is not null
+	5. Rating not null
+	6. Name + time is primary key
+
+MaxPersonID
+	1. Id is non null
+	2. Id is >= 0
+
+MaxMovieID
+	1. Id is non null
+	2. Id is >= 0
+
