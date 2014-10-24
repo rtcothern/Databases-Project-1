@@ -5,9 +5,18 @@ CREATE TABLE Movie (
     rating varchar(10),
     company varchar(50) NOT NULL,
     PRIMARY KEY (id),
-    CHECK (year >= 1890),
-    CHECK (year <= 2020)
+    CHECK (id >= 0)
 ) ENGINE = INNODB;
+
+/* Constraints
+	Movie:
+	1. Id is primary key
+	2. Title is not null
+	3. Year between 1890 and 2020
+	4. Identification number is non null
+	5. Year is not null
+	6. Production company is not null
+*/
 
 CREATE TABLE Actor (
     id int,
@@ -17,9 +26,17 @@ CREATE TABLE Actor (
     dob date NOT NULL,
     dod date NOT NULL,
     PRIMARY KEY (id),
-    CHECK (dob <= '2014-10-29'),
-    CHECK (dod <= '2014-10-29')
+    CHECK (id >= 0)
 ) ENGINE = INNODB;
+
+/* Constraints
+	Actor
+	1. Id is primary key
+	2. First and last name not null
+	3. Sex non null
+	4. Dob non null
+	5. Dob and Dod are both before 10/29/2014
+*/
 
 CREATE TABLE Director (
     id int,
@@ -28,9 +45,16 @@ CREATE TABLE Director (
     dob date NOT NULL,
     dod date NOT NULL,
     PRIMARY KEY (id),
-    CHECK (dob <= '2014-10-29'),
-    CHECK (dod <= '2014-10-29')
+    CHECK (id >= 0)
 ) ENGINE = INNODB;
+
+/* Constraints
+	Director
+	1. Id is primary key
+	2. First and last name not null
+	3. Dob non null
+	4. Dob and Dod are both before 10/29/2014
+*/
 
 CREATE TABLE MovieGenre (
     mid int NOT NULL,
@@ -38,12 +62,27 @@ CREATE TABLE MovieGenre (
     FOREIGN KEY (mid) REFERENCES Movie(id)
 ) ENGINE = INNODB;
 
+/* Constraints
+	MovieGenre
+	1. Mid is a ForeignKey to Movie ID
+	2. Mid is not null
+	3. Genre is not null
+*/
+
 CREATE TABLE MovieDirector (
     mid int NOT NULL,
     did int NOT NULL,
     FOREIGN KEY (mid) REFERENCES Movie(id),
     FOREIGN KEY (did) REFERENCES Director(id)
 ) ENGINE = INNODB;
+
+/* Constraints
+Movie Director
+	1. Mid is a ForeignKey to Movie ID
+	2. Mid is not null
+	3. Did is a ForeignKey to Director
+	4. Director is not null
+*/
 
 CREATE TABLE MovieActor (
     mid int NOT NULL,
@@ -53,23 +92,52 @@ CREATE TABLE MovieActor (
     FOREIGN KEY (aid) REFERENCES Actor(id)
 ) ENGINE = INNODB;
 
+/* Constraints
+	Movie Actor
+	1. Mid is a ForeignKey to Movie ID
+	2. Mid is not null
+	3. Aid is a ForeignKey to Movie ID
+	4. Aid is not null
+	5. Role is not null
+*/
+
 CREATE TABLE Review (
     name varchar(20) NOT NULL,
     time timestamp NOT NULL,
     mid int NOT NULL,
     rating int NOT NULL,
     comment varchar(500),
-    PRIMARY KEY (name, time),
     FOREIGN KEY (mid) REFERENCES Movie(id),
     FOREIGN KEY (aid) REFERENCES Actor(id)
 ) ENGINE = INNODB;
+
+/* Constraints
+	Review
+	1. Name is not null
+	2. Time is not null
+	3. Mid is a ForeignKey to Movie ID
+	4. Mid is not null
+	5. Rating not null
+*/
 
 CREATE TABLE MaxPersonID (
     id int NOT NULL,
     CHECK (id >= 0)
 ) ENGINE = INNODB;
 
+/* Constraints
+	MaxPersonID
+	1. Id is non null
+	2. Id is >= 0
+*/
+
 CREATE TABLE MaxMovieID (
     id int NOT NULL,
     CHECK (id >= 0)
 ) ENGINE = INNODB;
+
+/* Constraints
+	MaxMovieID
+	1. Id is non null
+	2. Id is >= 0
+*/
