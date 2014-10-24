@@ -103,12 +103,11 @@ CREATE TABLE MovieActor (
 
 CREATE TABLE Review (
     name varchar(20) NOT NULL,
-    time timestamp NOT NULL,
+    time timestamp,
     mid int NOT NULL,
     rating int NOT NULL,
     comment varchar(500),
-    FOREIGN KEY (mid) REFERENCES Movie(id),
-    FOREIGN KEY (aid) REFERENCES Actor(id)
+    FOREIGN KEY (mid) REFERENCES Movie(id),	
 ) ENGINE = INNODB;
 
 /* Constraints
