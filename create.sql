@@ -5,7 +5,7 @@ CREATE TABLE Movie (
     rating varchar(10),
     company varchar(50) NOT NULL,
     PRIMARY KEY (id),
-    CHECK (id>=0)
+    CHECK (id >= 0)
 ) ENGINE = INNODB;
 
 /* Constraints
@@ -99,7 +99,7 @@ CREATE TABLE Review (
     mid int,
     rating int NOT NULL,
     comment varchar(500),
-    FOREIGN KEY (mid) REFERENCES Movie(id),	
+    FOREIGN KEY (mid) REFERENCES Movie(id)
 ) ENGINE = INNODB;
 
 /* Constraints
