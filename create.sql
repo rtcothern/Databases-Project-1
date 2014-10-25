@@ -12,10 +12,9 @@ CREATE TABLE Movie (
 	Movie:
 	1. Id is primary key
 	2. Title is not null
-	3. Year between 1890 and 2020
-	4. Identification number is non null
-	5. Year is not null
-	6. Production company is not null
+	3. Year is not null
+	4. Production company is not null
+    5. Id is non negative
 */
 
 CREATE TABLE Actor (
@@ -24,7 +23,7 @@ CREATE TABLE Actor (
     first varchar(20) NOT NULL,
     sex varchar(6) NOT NULL,
     dob date NOT NULL,
-    dod date NOT NULL,
+    dod date,
     PRIMARY KEY (id),
     CHECK (id >= 0)
 ) ENGINE = INNODB;
@@ -32,10 +31,8 @@ CREATE TABLE Actor (
 /* Constraints
 	Actor
 	1. Id is primary key
-	2. First and last name not null
-	3. Sex non null
-	4. Dob non null
-	5. Dob and Dod are both before 10/29/2014
+	2. First and la
+    5. Id is non negative
 */
 
 CREATE TABLE Director (
@@ -43,7 +40,7 @@ CREATE TABLE Director (
     last varchar(20) NOT NULL,
     first varchar(20) NOT NULL,
     dob date NOT NULL,
-    dod date NOT NULL,
+    dod date,
     PRIMARY KEY (id),
     CHECK (id >= 0)
 ) ENGINE = INNODB;
@@ -53,11 +50,11 @@ CREATE TABLE Director (
 	1. Id is primary key
 	2. First and last name not null
 	3. Dob non null
-	4. Dob and Dod are both before 10/29/2014
+    4. Id is non negative
 */
 
 CREATE TABLE MovieGenre (
-    mid int NOT NULL,
+    mid int,
     genre varchar(20) NOT NULL,
     FOREIGN KEY (mid) REFERENCES Movie(id)
 ) ENGINE = INNODB;
@@ -65,13 +62,12 @@ CREATE TABLE MovieGenre (
 /* Constraints
 	MovieGenre
 	1. Mid is a ForeignKey to Movie ID
-	2. Mid is not null
-	3. Genre is not null
+	2. Genre is not null
 */
 
 CREATE TABLE MovieDirector (
-    mid int NOT NULL,
-    did int NOT NULL,
+    mid int,
+    did int,
     FOREIGN KEY (mid) REFERENCES Movie(id),
     FOREIGN KEY (did) REFERENCES Director(id)
 ) ENGINE = INNODB;
@@ -79,14 +75,12 @@ CREATE TABLE MovieDirector (
 /* Constraints
 Movie Director
 	1. Mid is a ForeignKey to Movie ID
-	2. Mid is not null
-	3. Did is a ForeignKey to Director
-	4. Director is not null
+	2. Did is a ForeignKey to Director
 */
 
 CREATE TABLE MovieActor (
-    mid int NOT NULL,
-    aid int NOT NULL,
+    mid int,
+    aid int,
     role varchar(50) NOT NULL,
     FOREIGN KEY (mid) REFERENCES Movie(id),
     FOREIGN KEY (aid) REFERENCES Actor(id)
@@ -95,16 +89,14 @@ CREATE TABLE MovieActor (
 /* Constraints
 	Movie Actor
 	1. Mid is a ForeignKey to Movie ID
-	2. Mid is not null
-	3. Aid is a ForeignKey to Movie ID
-	4. Aid is not null
-	5. Role is not null
+	2. Aid is a ForeignKey to Movie ID
+	3. Role is not null
 */
 
 CREATE TABLE Review (
     name varchar(20) NOT NULL,
     time timestamp,
-    mid int NOT NULL,
+    mid int,
     rating int NOT NULL,
     comment varchar(500),
     FOREIGN KEY (mid) REFERENCES Movie(id),	
@@ -115,8 +107,7 @@ CREATE TABLE Review (
 	1. Name is not null
 	2. Time is not null
 	3. Mid is a ForeignKey to Movie ID
-	4. Mid is not null
-	5. Rating not null
+	4. Rating not null
 */
 
 CREATE TABLE MaxPersonID (
@@ -127,7 +118,7 @@ CREATE TABLE MaxPersonID (
 /* Constraints
 	MaxPersonID
 	1. Id is non null
-	2. Id is >= 0
+	2. Id is non negative
 */
 
 CREATE TABLE MaxMovieID (
@@ -138,5 +129,5 @@ CREATE TABLE MaxMovieID (
 /* Constraints
 	MaxMovieID
 	1. Id is non null
-	2. Id is >= 0
+	2. Id is non negative
 */
