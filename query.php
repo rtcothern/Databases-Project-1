@@ -45,9 +45,15 @@ if($query && $db) {
 
         echo "<tr>\n";
         // Header row
-        foreach(array_keys($row) as $key) {
-            echo "\t<th>";
-            if(empty($key)) {
+        foreach(array_keys($row) as $pre_key) {
+            // Need to convert to string ahead of time
+            // so that "0" isn't seen as empty. Because of some
+            // interesting rules in PHP, empty("0") is true (whereas
+            // empty("1") is false). Therefore, I convert to string
+            // to do a type-strict compare (===) with the empty string.
+            $key = (string) $pre_key;
+            echo "\t".'<th align="center">';
+            if($key === "") {
                 echo "<i>&lt;empty name&gt;</i>";
             } else {
                 echo htmlspecialchars($key);
@@ -59,15 +65,20 @@ if($query && $db) {
         // first row was already retrieved but not yet
         // fully processed
         do {
-            echo "<tr>\n";
+            echo "\t".'<tr align="center">';
             foreach($row as $value) {
                 echo "\t<td>";
                 if(is_null($value)) {
                     echo "<i>NULL</i>";
-                } else if(empty($value)) {
-                    echo "<i>&lt;empty string&gt;</i>";
                 } else {
-                    echo htmlspecialchars($value);
+                    // Same issue with "0" as mentioned in an above
+                    // comment.
+                    $value = (string) $value;
+                    if($value === "") {
+                        echo "<i>&lt;empty string&gt;</i>";
+                    } else {
+                        echo htmlspecialchars($value);
+                    }
                 }
                 echo "</td>\n";
             }
