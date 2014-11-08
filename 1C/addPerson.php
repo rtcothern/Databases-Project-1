@@ -38,6 +38,10 @@ $type;
 if($all) {
         $db = mysql_connect("localhost", "cs143", "");
         mysql_select_db("CS143", $db);
+        $first = mysql_real_escape_string($_POST["firstName"]);
+        $last = mysql_real_escape_string($_POST["lastName"]);
+        $dob = mysql_real_escape_string($_POST["dob"]);
+        $dod = mysql_real_escape_string($_POST["dod"]);
     }
 ?>
 
@@ -66,12 +70,12 @@ Add an Actor or Director
         $idArr = mysql_fetch_array(mysql_query($idQuery, $db));
         $id = $idArr["id"] + 1;
         if($type == "Actor")
-            $query = "INSERT INTO Actor VALUES($id, '$last', '$first', '$sex', $dob, $dob)";
+            $query = "INSERT INTO Actor VALUES($id, '$last', '$first', '$sex', '$dob', '$dod')";
         else if($type == "Director")
-            $query = "INSERT INTO Director VALUES($id, '$last', '$first', $dob, $dob)";
-        echo "$query\n";
+            $query = "INSERT INTO Director VALUES($id, '$last', '$first', '$dob', '$dod')";
+        //echo "$query\n";
         $results = mysql_query($query, $db);
-        echo "\nResults: $results";
+        //echo "\nResults: $results";
         if($results == TRUE){
             $maxIdUpdate = "UPDATE MaxPersonID SET id=$id";
             $upRes = mysql_query($maxIdUpdate, $db);
