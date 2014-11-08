@@ -19,35 +19,74 @@ $directors = mysql_query($dQuery, $db);
 
 <?php startblock('article') ?>
 
-    <form action="addPerson.php" method="POST"> 
+    <form action="addMoviePerson.php" method="POST"> 
         <b>Select a Movie </b><select name="movie">
             <?php while($row=mysql_fetch_assoc($movieResults)) {
                       echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["title"] . " (" . $row["year"] . ")") . '</option>' . "\n";
                   } ?>
         </select> <br/>
-        <b>Association: </b><input onclick="retrievePersons('Actor');" type="radio" name="type" value="Actor" checked="true">Actor<input onclick="retrievePersons('Director');" type="radio" name="type" value="Director">Director
+        <b>Association: </b><input onclick="switchPersons('Actor');" type="radio" name="type" value="Actor" checked="true">Actor<input onclick="switchPersons('Director');" type="radio" name="type" value="Director">Director
          
-        <b>Select a Movie </b><select name="movie">
-            <?php while($row=mysql_fetch_assoc($actors)) {
-                      echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["first"] . $row["last"] . " (" . $row["dob"] . ")") . '</option>' . "\n";
-                  } ?>
-        </select> <br/>
+       <div id="aDiv"> 
+           <b>Select an Actor </b><select name="actorSelect">
+                <?php while($row=mysql_fetch_assoc($actors)) {
+                          echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["first"] . $row["last"] . " (" . $row["dob"] . ")") . '</option>' . "\n";
+                      } ?>
+            </select> <br/>
+            <b>Actor Role: </b><input type="text" name="role" maxlength="20">
+        </div>
 
-         <b>Select a Movie </b><select name="movie" display="none">
-            <?php while($row=mysql_fetch_assoc($directors)) {
-                      echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["first"] . $row["last"] . " (" . $row["dob"] . ")") . '</option>' . "\n";
-                  } ?>
-        </select> <br/>
+        <div id="dDiv" style="display:none">
+             <b>Select a Director </b><select name="directorSelect">
+                <?php while($row=mysql_fetch_assoc($directors)) {
+                          echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["first"] . $row["last"] . " (" . $row["dob"] . ")") . '</option>' . "\n";
+                      } ?>
+            </select> 
+        </div><br/>
 
         <br/><input type="submit" value="Submit" />
     </form>
 
 <script type="text/javascript">
-    function retrievePersons(personType){
+    function switchPersons(personType){
         switch(personType){
             case 'Actor':
-               
+               document.getElementById("aDiv").style.display = "block";
+               document.getElementById("dDiv").style.display = "none";
+               break;
+           case 'Director':
+               document.getElementById("dDiv").style.display = "block";
+               document.getElementById("aDiv").style.display = "none";
+               break;
         }
     }
 </script>
 <?php endblock() ?>
+
+<?php 
+    if(isset($_POST["type"]) and isset($_POST["movie"])){
+        $type = $_POST["type"];
+        $mid = $_POST["movie"];
+        $role = mysql_real_escape_string($_POST["role"]);
+        $insertQuery = "INSERT INTO Movie" . $type . " VALUES($mid, ";
+        if($type == 'Actor'){
+            $insertQuery .= $_POST["actorSelect"] . ", '$role')";
+        }
+        else if($type == 'Director'){
+            $insertQuery .= $_POST["directorSelect"] . ")";
+        }
+        echo "Query: $insertQuery";
+        $insertResult = mysql_query($insertQuery, $db);
+        echo "    Result: $insertResult";
+        if($insertQuery == TRUE){
+            ?>
+            <h3> Success! </h3>
+            <?php
+        }
+        else{
+            ?>
+            <h3> There was an error, please check your inputs </h3>
+            <?php          
+        }
+    }
+ ?>
