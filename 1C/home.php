@@ -11,8 +11,7 @@
             <h3>Create additional data</h3>
                 <a href="addPerson.php"> Add an Actor or a Director</a> <br/>
                 <a href="addMovie.php"> Add a Movie</a> <br/>
-                <a href="addMovieActor.php"> Associate a Movie and an Actor</a> <br/>
-                <a href="addMovieDirector.php"> Associate a Movie and a Director</a> <br/>
+                <a href="addMoviePerson.php"> Associate a Movie with an Actor or Director</a> <br/>
             <h3>Browse existing data</h3>
                 <a href="showActors.php"> View Actor data</a> <br/>
                 <a href="showMovies.php"> Add a Movie</a>  <br/>
