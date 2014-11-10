@@ -19,6 +19,32 @@ $directors = mysql_query($dQuery, $db);
 
 <?php startblock('article') ?>
 
+<?php 
+    if(isset($_POST["type"]) and isset($_POST["movie"])){
+        $type = $_POST["type"];
+        $mid = $_POST["movie"];
+        $role = $_POST["role"];
+        if(empty($role) && $type=="Actor") {
+            errorMessage("Must specify a role for an actor");
+        } else {
+            $role = mysql_real_escape_string($role);
+            $insertQuery = "INSERT INTO Movie" . $type . " VALUES($mid, ";
+            if($type == 'Actor'){
+                $insertQuery .= $_POST["actorSelect"] . ", '$role')";
+            }
+            else if($type == 'Director'){
+                $insertQuery .= $_POST["directorSelect"] . ")";
+            }
+            $insertResult = mysql_query($insertQuery, $db);
+            if($insertQuery == TRUE){
+                successMessage(null);
+            } else {
+                errorMessage(null);
+            }
+        }
+    }
+ ?>
+
     <form action="addMoviePerson.php" method="POST"> 
         <b>Select a Movie </b><select name="movie">
             <?php while($row=mysql_fetch_assoc($movieResults)) {
@@ -30,16 +56,16 @@ $directors = mysql_query($dQuery, $db);
        <div id="aDiv"> 
            <b>Select an Actor </b><select name="actorSelect">
                 <?php while($row=mysql_fetch_assoc($actors)) {
-                          echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["first"] . $row["last"] . " (" . $row["dob"] . ")") . '</option>' . "\n";
+                          echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["first"] . " " . $row["last"] . " (" . $row["dob"] . ")") . '</option>' . "\n";
                       } ?>
             </select> <br/>
-            <b>Actor Role: </b><input type="text" name="role" maxlength="20">
+            <b>Actor Role </b><input type="text" name="role" maxlength="20">
         </div>
 
         <div id="dDiv" style="display:none">
              <b>Select a Director </b><select name="directorSelect">
                 <?php while($row=mysql_fetch_assoc($directors)) {
-                          echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["first"] . $row["last"] . " (" . $row["dob"] . ")") . '</option>' . "\n";
+                          echo '<option value="' . htmlspecialchars($row["id"]) . '">' . htmlspecialchars($row["first"] . " " . $row["last"] . " (" . $row["dob"] . ")") . '</option>' . "\n";
                       } ?>
             </select> 
         </div><br/>
@@ -62,31 +88,3 @@ $directors = mysql_query($dQuery, $db);
     }
 </script>
 <?php endblock() ?>
-
-<?php 
-    if(isset($_POST["type"]) and isset($_POST["movie"])){
-        $type = $_POST["type"];
-        $mid = $_POST["movie"];
-        $role = mysql_real_escape_string($_POST["role"]);
-        $insertQuery = "INSERT INTO Movie" . $type . " VALUES($mid, ";
-        if($type == 'Actor'){
-            $insertQuery .= $_POST["actorSelect"] . ", '$role')";
-        }
-        else if($type == 'Director'){
-            $insertQuery .= $_POST["directorSelect"] . ")";
-        }
-        echo "Query: $insertQuery";
-        $insertResult = mysql_query($insertQuery, $db);
-        echo "    Result: $insertResult";
-        if($insertQuery == TRUE){
-            ?>
-            <h3> Success! </h3>
-            <?php
-        }
-        else{
-            ?>
-            <h3> There was an error, please check your inputs </h3>
-            <?php          
-        }
-    }
- ?>
