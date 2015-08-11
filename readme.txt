@@ -1,12 +1,7 @@
 Partners:
      Name: George Chassiakos
-      UID: 204052193
-    Email: georgecha@ucla.edu
-
      Name: Ray Cothern
-      UID: 604161519
-    Email: rtcothern@gmail.com
-
+     
 Project Criteria:
     All criteria are met. Page I1 is in a file called
     addPerson.php. Page I2 is in addMovie.php. Page I3
